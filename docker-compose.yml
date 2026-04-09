@@ -1,0 +1,49 @@
+services:
+  app:
+    build: .
+    container_name: ai_assessment_app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+    networks:
+      - ai_net
+
+  db:
+    image: postgres:16-alpine
+    container_name: ai_assessment_db
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ai_net
+
+  adminer:
+    image: adminer:latest
+    container_name: ai_assessment_adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - ai_net
+
+volumes:
+  postgres_data:
+
+networks:
+  ai_net:
+    driver: bridge
