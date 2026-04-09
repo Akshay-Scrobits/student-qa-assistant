@@ -264,9 +264,9 @@ The application follows a structured lifecycle for each tutoring session:
    ```
 
 2. **Environment Setup**:
-   Copy `.env.example` to `.env` and fill in your credentials.
+   Copy `example.env` to `.env` and fill in your credentials. See [Environment Variables](#️-environment-variables) for details on each setting.
    ```bash
-   cp .env.example .env
+   cp example.env .env
    ```
 
 3. **Install Dependencies**:
@@ -359,3 +359,31 @@ The system implements Role-Based Access Control (RBAC) to ensure secure interact
 | | `GET /workflow/state/{question_id}` | **Authenticated** |
 | **User** | `PUT /users/{user_id}`, `DELETE /users/{user_id}` | **Authenticated (Self)** |
 | **Vector DB** | `POST /vector-db/upload` | **Authenticated** |
+
+
+---
+
+## ⚙️ Environment Variables
+
+The application requires several environment variables for database connections, authentication, and AI provider configuration.
+
+| Variable | Description | Requirement |
+|:---|:---|:---|
+| `POSTGRES_USER` | PostgreSQL database username | Required for DB access |
+| `POSTGRES_PASSWORD` | PostgreSQL database password | Required for DB authentication |
+| `POSTGRES_DB` | Name of the PostgreSQL database | Target database for persistence |
+| `POSTGRES_HOST` | Host address of the PostgreSQL server | Database connection endpoint |
+| `POSTGRES_PORT` | Port for PostgreSQL (Default: `5432`) | Database connection port |
+| `JWT_ALGORITHM` | Algorithm for signing JWT targets (e.g., `HS256`) | Security standard for auth |
+| `JWT_SECRET_KEY` | Secret key for JWT encryption | Secures user sessions and tokens |
+| `MODEL_NAME` | The specific LLM model to use (e.g., `gemini-1.5-flash`) | Defines agent reasoning power |
+| `TEMPERATURE` | LLM sampling temperature (0.0 to 1.0) | Controls AI output creativity |
+| `MODEL_PROVIDER` | AI provider choice (`google_genai` or `openai`) | Switches between AI backend logic |
+| `GOOGLE_API_KEY` | API key for Google Generative AI services | Authenticates Gemini model calls |
+| `PINECONE_API_KEY` | API key for Pinecone vector database | Required for RAG retrieval |
+| `PINECONE_INDEX_NAME` | Name of the index in Pinecone | Target vector storage for context |
+| `PINECONE_REGION` | Infrastructure region for Pinecone index | Connectivity to vector store |
+| `PINECONE_HOST` | Direct host URL for the Pinecone index | Direct API endpoint for vector ops |
+| `PINECONE_CLOUD` | Cloud provider for Pinecone (e.g., `aws`) | Index infrastructure mapping |
+| `PINECONE_METRIC` | Distance metric for search (`cosine`, `dotproduct`) | Defines search relevance logic |
+| `DEFAULT_NAMESPACE` | Default fallback namespace for Pinecone | Organizes data for multi-tenancy |
